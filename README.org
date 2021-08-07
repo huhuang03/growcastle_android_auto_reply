@@ -1,1 +1,22 @@
+* Install
+
+It's complecate to install for now.
+
+run ~python scripts/install.py~ to install the script to android ~/data/local/tmp~.
+
+* Usage
+** start
+#+BEGIN_SRC shell
+adb shell
+cd /data/local/tmp
+nohup ./growcastle_script.sh 1&
+#+END_SRC
+
+Please note 
+~nohup ./growcastle_script.sh 1&~ will click the Fight button every 5 seconds, and ~nohup ./growcastle_script.sh 1&~ will click the repeat button
+
+** stop
+just delete the android /sdcard/groupcastle_script/run.lock file.
+
+
 * How to control start and stop?
