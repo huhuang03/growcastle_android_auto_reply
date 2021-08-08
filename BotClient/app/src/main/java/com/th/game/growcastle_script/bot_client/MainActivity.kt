@@ -1,5 +1,8 @@
 package com.th.game.growcastle_script.bot_client
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +12,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
+import com.th.android.comm.TLog
 import com.th.game.growcastle_script.bot_client.databinding.ActivityMainBinding
+import com.th.game.growcastle_script.bot_client.manager.notiMgr
+
+val lg = TLog("th")
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,10 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lg.i("onCreate")
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -32,6 +40,22 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        val permissionStorage = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission_group.STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!permissionStorage) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        notiMgr.show(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
